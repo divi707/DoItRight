@@ -8,20 +8,19 @@ from types_of_exercise import TypeOfExercise
 from mediapipe.python.solutions import drawing_utils as mp_drawing
 
 def main(video_path=None):
-    # Initialize MediaPipe Pose model
+
     mp_pose = mp.solutions.pose
 
-    # Initialize VideoCapture object to read from webcam if no video path provided
+
     if video_path is None:
         cap = cv2.VideoCapture(0)
     else:
         cap = cv2.VideoCapture(video_path)
 
-    # Get the dimensions of the video frame
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
-    # Create a UI frame with dimensions matching the video frame
+    #UI frame 
     cv2.namedWindow('Real-time Pose Classification', cv2.WINDOW_NORMAL)
     cv2.resizeWindow('Real-time Pose Classification', width, height)
 
@@ -34,16 +33,16 @@ def main(video_path=None):
             if not ret:
                 break
 
-            # Convert BGR image to RGB
+
             rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-            # Process the frame to detect pose landmarks
+            # pose landmarks
             results = pose.process(rgb_frame)
 
             if results.pose_landmarks:
                 landmarks = results.pose_landmarks.landmark
                 
-                # Perform real-time classification of the exercise
+                #real-time classification 
                 exercise_classifier = TypeOfExercise(landmarks)
                 classified_exercise = exercise_classifier.classify_exercise()
 
